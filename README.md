@@ -1,3 +1,5 @@
+**graffiti** is a simple Perl script used to send ASCII-art texts to remote webserver logs using consecutive 404 errors.
+
 ## Usage:
 
     -d  destination 
