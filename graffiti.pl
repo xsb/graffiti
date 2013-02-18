@@ -5,33 +5,29 @@ use strict;
 use feature "switch";
 use Getopt::Long;
  
-my ( $destination, $text, $agent, $repeats, $verbose, $background, $foreground );
+my ( $destination, $text, $agent, $repeats, $verbose );
 
 my $result = GetOptions(
   'd=s'  => \$destination,
   't=s'  => \$text,
   'a=s'  => \$agent,
-  'bg=s' => \$background,
-  'fg=s' => \$foreground,
   'r=i'  => \$repeats,
   'v'    => \$verbose,
 );
 
 sub print_usage {
-  print "USAGE:            \n";
-  print "  -d  destination \n";
-  print "  -t  text        \n";
-  print "  -a  user-agent  \n";
-  print "  -bg background  \n";
-  print "  -fg foreground  \n";
-  print "  -r  repeats     \n";
-  print "  -v  verbose     \n";
-  print "\n";
-  print "EXAMPLES:         \n";
-  print "  ./graffiti.pl -d www.example.com -t \"funny text\"\n";
-  print "  ./graffiti.pl -v -d localhost -t \"testing graffiti\" -r 2\n";
-  print "  ./graffiti.pl -d 1.2.3.4 -t \"last example\" -bg . -fg \"#\" -a \"Mozilla\\ Firefox\"\n";
-  print "\n";
+  print <<'END';
+USAGE:
+  -d  destination
+  -t  text
+  -a  user-agent
+  -r  repeats
+  -v  verbose
+
+EXAMPLE:
+  ./graffiti.pl -d www.example.com -t "funny text"
+
+END
 }
 
 my @a = ("------------NNN---------------------",
@@ -381,10 +377,6 @@ sub send_text {
 sub send_character {
 
   foreach (@_) {
-    # change theme :)
-    s/-/$background/g if $background;
-    s/N/$foreground/g if $foreground;
-
     # I love 404 errors (but would be better/faster without system curl)
     system "curl $destination/$_ -A $agent -I -o /dev/null -s";
 
@@ -417,21 +409,9 @@ unless ($repeats) {
   $repeats = 1;
 }
 
-if ($background) {
-  # must be one-character
-  $background = substr($background,0,1);
-}
-
-if ($foreground) {
-  # must be one-character
-  $foreground = substr($foreground,0,1);
-}
-
 print "Destination ----> $destination   \n";
 print "Text -----------> $text          \n";
 print "User Agent -----> $agent         \n";
-print "Background -----> $background    \n" if $background;
-print "Foreground -----> $foreground    \n" if $foreground;
 print "Repeats    -----> $repeats     \n\n";
 print " ** Use -v to switch verbose mode on **\n\n" unless $verbose;
 
