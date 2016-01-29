@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/xsb/graffiti/banner"
 )
 
 // Single requests to a remote server. Contains a single line
@@ -63,7 +61,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	graffiti := banner.Transform(text)
+	graffiti := toBanner(text)
 	baseUrl := "http://" + destination + "/"
 
 	// Print summary

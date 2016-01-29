@@ -1,4 +1,4 @@
-package banner
+package main
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 
 // Transforms a string into an array of strings
 // representing a 2 dimensional banner of a text
-func Transform(text string) []string {
+func toBanner(text string) []string {
 
 	text = strings.ToLower(text)
 	var bannerText []string
@@ -20,8 +20,8 @@ func Transform(text string) []string {
 }
 
 // Prints a string as a banner
-func Print(s string) {
-	b := Transform(s)
+func printBanner(s string) {
+	b := toBanner(s)
 	for _, line := range b {
 		fmt.Println(line)
 	}

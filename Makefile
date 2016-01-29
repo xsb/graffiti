@@ -1,10 +1,10 @@
-bin:
-	CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o build/graffiti .
+build:
+	CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o bin/graffiti .
 
 clean:
-	rm -rf build
+	rm -rfv bin
 
-container: bin
+container: build
 	docker build -t graffiti .
 
-all: clean bin
+all: clean build
