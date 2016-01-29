@@ -1,9 +1,10 @@
 # graffiti
 
-graffiti sends ASCII-art texts to remote webserver logs using consecutive 404 errors.
+**graffiti** sends ASCII-art texts to remote webserver logs using consecutive 404 errors.
+
+Don't use this software to abuse other people's systems, this is not a DOS tool and it's not optimized for that use case.
 
 ## Example
-
 
 From your computer:
 
@@ -121,19 +122,19 @@ From the remote server:
 1.2.3.4 - - [20/Sep/2015:14:03:36 +0200] "GET /------------------------------------ HTTP/1.1" 404 168 "-" "graffiti"
 ```
 
-## Advanced parameters
+## Additional Configuration
 
 
 ```
   -a string
-    	User Agent (default "graffiti")
+        User Agent (default "graffiti")
   -d string
-    	Destination (ie: www.example.com)
-  -n	Dry Run
+        Destination (ie: www.example.com)
+  -n    Dry Run
   -r int
-    	Number of times to execute (default 1)
-  -s	Silent or quiet mode
+        Number of times to execute (default 1)
+  -s    Silent or quiet mode
   -t string
-    	Text to send to the remote server
-  -v	Verbose output
+        Text to send to the remote server
+  -v    Verbose output
 ```

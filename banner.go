@@ -7,19 +7,16 @@ import (
 
 // Transforms a string into an array of strings
 // representing a 2 dimensional banner of a text
-func toBanner(text string) []string {
-
+func toBanner(text string) (bannerText []string) {
 	text = strings.ToLower(text)
-	var bannerText []string
-
 	for _, char := range text {
 		nextChar := bannerMap[string(char)]
 		bannerText = append(bannerText, nextChar...)
 	}
-	return bannerText
+	return
 }
 
-// Prints a string as a banner
+// Prints a string as a banner. Only for debugging.
 func printBanner(s string) {
 	b := toBanner(s)
 	for _, line := range b {
