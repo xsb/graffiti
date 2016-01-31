@@ -10,6 +10,11 @@ import (
 	"text/template"
 )
 
+const (
+	defaultBg = "-"
+	defaultFg = "N"
+)
+
 // Default behavior. Can be changed with command line arguments.
 var (
 	userAgent = "graffiti"
@@ -17,6 +22,8 @@ var (
 	verbose   = false
 	dryRun    = false
 	silent    = false
+	bg        = defaultBg
+	fg        = defaultFg
 )
 
 var summaryTmpl = `Text: {{.Text}}
@@ -67,8 +74,8 @@ func graffitiAttack(text, baseURL string) {
 }
 
 // Adds protocol prefix if necessary
-func formatBaseURL(destination string) (baseURL string) {
-	baseURL = destination
+func formatBaseURL(destination string) string {
+	baseURL := destination
 	if !strings.HasPrefix(destination, "http://") && !strings.HasPrefix(destination, "https://") {
 		baseURL = "http://" + baseURL
 	} else {
@@ -114,6 +121,8 @@ func main() {
 	flag.BoolVar(&verbose, "v", verbose, "Verbose output")
 	flag.BoolVar(&dryRun, "n", dryRun, "Dry Run")
 	flag.BoolVar(&silent, "s", silent, "Silent or quiet mode")
+	flag.StringVar(&bg, "bg", defaultBg, "Background")
+	flag.StringVar(&fg, "fg", defaultFg, "Foreground")
 	flag.Parse()
 
 	// Configuration

@@ -7,13 +7,32 @@ import (
 
 // Transforms a string into an array of strings
 // representing a 2 dimensional banner of a text
-func toBanner(text string) (bannerText []string) {
+func toBanner(text string) []string {
+	var bannerText []string
 	text = strings.ToLower(text)
+
 	for _, char := range text {
 		nextChar := bannerMap[string(char)]
 		bannerText = append(bannerText, nextChar...)
 	}
-	return
+
+	if bg != defaultBg {
+		bannerText = replace(defaultBg, bg, bannerText)
+	}
+
+	if fg != defaultFg {
+		bannerText = replace(defaultFg, fg, bannerText)
+	}
+
+	return bannerText
+}
+
+// Replaces in banner
+func replace(oldSymbol, newSymbol string, bannerText []string) []string {
+	for i, line := range bannerText {
+		bannerText[i] = strings.Replace(line, oldSymbol, newSymbol, -1)
+	}
+	return bannerText
 }
 
 // Prints a string as a banner. Only for debugging.

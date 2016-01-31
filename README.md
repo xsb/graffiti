@@ -128,8 +128,12 @@ From the remote server:
 ```
   -a string
         User Agent (default "graffiti")
+  -bg string
+        Background (default "-")
   -d string
         Destination (ie: www.example.com)
+  -fg string
+        Foreground (default "N")
   -n    Dry Run
   -r int
         Number of times to execute (default 1)
