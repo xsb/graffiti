@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"text/template"
 )
 
 // Default behavior. Can be changed with command line arguments.
@@ -17,21 +18,40 @@ var (
 	silent    = false
 )
 
+var summaryTmpl = `Text: {{.Text}}
+Destination: {{.BaseURL}}
+User Agent: {{.UserAgent}}
+{{if (gt .Repeats 1)}}Repeats: {{.Repeats}}
+{{end}}{{if .DryRun}}** Dry Run Mode **
+{{end}}{{if not .Verbose}}** Use -v to switch verbose mode on **
+{{end}}`
+
+// Used in the summary template for printing
+type summary struct {
+	Text      string
+	BaseURL   string
+	UserAgent string
+	Repeats   int
+	DryRun    bool
+	Verbose   bool
+}
+
 // Prints a summary before starting http requests.
 func printSummary(text, baseURL string) {
-	if !silent {
-		fmt.Println("Text:", "\""+text+"\"")
-		fmt.Println("Destination:", baseURL)
-		fmt.Println("User Agent:", userAgent)
-		if repeats > 1 {
-			fmt.Println("Repeats:", repeats)
-		}
-		if dryRun {
-			fmt.Println("** Dry Run Mode **")
-		}
-		if !verbose {
-			fmt.Println(" ** Use -v to switch verbose mode on **")
-		}
+	t, err := template.New("summary_tmpl").Parse(summaryTmpl)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	err = t.Execute(os.Stdout, summary{
+		Text:      text,
+		BaseURL:   baseURL,
+		UserAgent: userAgent,
+		Repeats:   repeats,
+		DryRun:    dryRun,
+		Verbose:   verbose,
+	})
+	if err != nil {
+		log.Fatalln(err)
 	}
 }
 
@@ -102,6 +122,8 @@ func main() {
 	}
 
 	baseURL := "http://" + destination + "/"
-	printSummary(text, baseURL)
+	if !silent {
+		printSummary(text, baseURL)
+	}
 	graffitiAttack(text, baseURL)
 }
