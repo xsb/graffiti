@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"text/template"
 )
 
@@ -73,6 +74,20 @@ func graffitiAttack(text, baseURL string) {
 	}
 }
 
+// Adds protocol prefix if necessary
+func formatBaseURL(destination string) (baseURL string) {
+	baseURL = destination
+	if !strings.HasPrefix(destination, "http://") && !strings.HasPrefix(destination, "https://") {
+		baseURL = "http://" + baseURL
+	} else {
+		baseURL = destination
+	}
+	if !strings.HasSuffix(baseURL, "/") {
+		baseURL = baseURL + "/"
+	}
+	return baseURL
+}
+
 // Single requests to a remote server. Contains a single line
 // of the banner as a request path. A 404 error is expected.
 func requestLine(url string) (status int, err error) {
@@ -121,7 +136,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	baseURL := "http://" + destination + "/"
+	baseURL := formatBaseURL(destination)
+
 	if !silent {
 		printSummary(text, baseURL)
 	}
