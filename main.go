@@ -27,29 +27,21 @@ User Agent: {{.UserAgent}}
 {{end}}{{if not .Verbose}}** Use -v to switch verbose mode on **
 {{end}}`
 
-// Used in the summary template for printing
-type summary struct {
-	Text      string
-	BaseURL   string
-	UserAgent string
-	Repeats   int
-	DryRun    bool
-	Verbose   bool
-}
-
 // Prints a summary before starting http requests.
 func printSummary(text, baseURL string) {
 	t, err := template.New("summary_tmpl").Parse(summaryTmpl)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	err = t.Execute(os.Stdout, summary{
-		Text:      text,
-		BaseURL:   baseURL,
-		UserAgent: userAgent,
-		Repeats:   repeats,
-		DryRun:    dryRun,
-		Verbose:   verbose,
+	err = t.Execute(os.Stdout, struct {
+		Text      string
+		BaseURL   string
+		UserAgent string
+		Repeats   int
+		DryRun    bool
+		Verbose   bool
+	}{
+		text, baseURL, userAgent, repeats, dryRun, verbose,
 	})
 	if err != nil {
 		log.Fatalln(err)
